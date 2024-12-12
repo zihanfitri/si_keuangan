@@ -12,7 +12,7 @@ class SPP extends CI_Controller {
 
 		is_login();
 		get_breadcrumb();
-		//$this->load->model('M_'.$this->parents,'mod');
+		$this->load->model('M_General','mod');
 		$this->load->library('form_validation');
 		$this->load->library('Datatables'); 
 	}
@@ -175,6 +175,11 @@ class SPP extends CI_Controller {
 		$pdf->Output();  
 
 
+	}
+	public function Hapus($id){
+		$this->M_General->delete($this->table,'id',$id);
+		$data['status'] = TRUE;
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 
 }

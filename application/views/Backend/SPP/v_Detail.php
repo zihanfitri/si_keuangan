@@ -20,6 +20,7 @@ $na = $this->db->query("SELECT name FROM siswa WHERE id = '$id'")->row_array();
                       <th>Waktu Pembayaran</th>
                       <th>SPP</th>
                       <th>Nominal</th>
+                      <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,6 +32,10 @@ foreach ($isi as $key ) { ?>
                             <td><?=tanggal($key->tanggal,'bulan').' - '.jam($key->tanggal).' WIB'?></td>
                             <td><?=$key->bulan?></td>
                             <td><?=rupiah($key->nominal)?></td>
+                            <td>
+                                <a href="javascript:void(0)" onclick="Hapus(<?=$key->id?>)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a>
+                            </td>
+                            
                         </tr>
 <?php  } ?>
                       
@@ -40,3 +45,32 @@ foreach ($isi as $key ) { ?>
         </div>
     </div>
 </div>
+
+<script>
+    function Hapus(id){
+        Swal({
+            title: 'Ingin menghapus data?',
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya'
+        }).then((result) => {
+            if(result.value) {
+                $.ajax({
+                    url : "<?=base_url($this->uri->segment(1).'/Hapus')?>/"+id,
+                    type: "POST",
+                    dataType: "JSON",
+                    success: function(data){
+                        location.reload();
+                        sweet('Dihapus !','Berhasil Hapus Data','success');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        sweet('Oops...','Gagal Hapus Data','error');
+                        console.log(jqXHR, textStatus, errorThrown);
+                    }
+                });
+            }
+        });
+    }
+</script>
