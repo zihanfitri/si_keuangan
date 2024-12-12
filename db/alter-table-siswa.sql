@@ -1,0 +1,2 @@
+ALTER TABLE `siswa` ADD `dispen` INT(1) NOT NULL DEFAULT '0' AFTER `kelas`;
+INSERT INTO `pembayaran` (`id`, `nama`, `nominal`, `tipe`, `kode`) VALUES (NULL, 'Uang Makan', '300000', 'KM', 'KM-0002'), (NULL, 'Uang Air', '100000', 'KM', 'KM-0003');
