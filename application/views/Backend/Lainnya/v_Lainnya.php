@@ -41,12 +41,14 @@
             	<input type="hidden" name="id" value="">
             	<div class="form-group">
             		<label class="control-label"> Nominal Pemasukan</label>
-            		<div><input type="text" required="" placeholder="Nominal Pemasukan" onkeypress="return Angka(this)" autocomplete="off" name="nominal" class="form-control"></div>
+            		<div><input type="text" id="nominal" required="" placeholder="Nominal Pemasukan" onkeypress="return Angka(this)" autocomplete="off" name="nominal" class="form-control"></div>
             	</div>
                 <div class="form-group">
                     <label class="control-label">Jenis Pemasukan</label>
-                    <select name="jenis" required="" data-placeholder="--Pilih--" class="form-control">
+                    <select name="jenis" id="jenis" required="" data-placeholder="--Pilih--" class="form-control">
                         <option value="">--Pilih--</option>
+                        <option value="Uang Kegiatan">Uang Kegiatan</option>
+                        <option value="Uang Sapras">Uang Sapras</option>
                         <option value="Dana BOS">Dana BOS</option>
                         <option value="Dana BOP">Dana BOP</option>
                         <option value="Pinjaman">Pinjaman</option>
@@ -70,6 +72,22 @@
 
 
 <script type="text/javascript">
+    $('#jenis').on('change',function(){
+        var jenis = '';
+        var jenis = $("#jenis").val();
+        if (jenis == "Uang Kegiatan") {
+            nominal = 200000;
+        } else if(jenis == "Uang Sapras") {
+            nominal = 250000;
+        }else{
+            nominal = 0;
+        }
+
+        $("#nominal").val(nominal);
+    
+        
+    });
+
 
 	var label;
 	var table;
@@ -218,5 +236,6 @@
 		$('#modal-form').modal('show');
 		$('.modal-title').text('Tambah Data');
 	}
+
 
 </script>

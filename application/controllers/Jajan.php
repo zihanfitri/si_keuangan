@@ -76,7 +76,6 @@ class Jajan extends CI_Controller {
             }
 
             $this->M_General->insert($this->table, $insert);
-            // $this->M_General->update_kas('kas_masuk', $insert['nominal']);
             
             $data['status'] = TRUE;
         }
