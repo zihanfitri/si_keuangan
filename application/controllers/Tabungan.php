@@ -138,11 +138,6 @@ class Tabungan extends CI_Controller {
 		}
 	}
 
-	function hapus($id){
-		$this->mod->hapus($id);
-		redirect('Tabungan');
-	}
-
 	function ubah($id){
 		$data = $this->mod->getByID($this->table,'id',$id,'id')->row();
 		echo json_encode($data);
@@ -177,5 +172,18 @@ class Tabungan extends CI_Controller {
         $data = $this->mod->getDetail($id_siswa);
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
+
+	public function Hapus($id, $id_siswa){
+		$this->M_General->delete('tabungan','id',$id);
+        $this->db->select_sum('nominal');
+        $masuk = $this->db->get_where('tabungan', array('id_siswa' => $id_siswa, 'status' => 1))->row('nominal');
+        $this->db->select_sum('nominal');
+        $keluar = $this->db->get_where('tabungan', array('id_siswa' => $id_siswa, 'status' =>  2))->row('nominal');
+        $total_saldo = $masuk - $keluar;
+        $this->db->where('id_siswa', $id_siswa);
+        $this->db->update('tabungan', array('saldo' => $total_saldo));
+		$data['status'] = TRUE;
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
 }
 

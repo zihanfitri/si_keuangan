@@ -15,6 +15,7 @@
                             <th>Masuk</th>
                             <th>Keluar</th>
                             <th>Saldo</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,21 +37,27 @@ $.ajax({
         console.log(data);
         var html = '';
         var no = 1;
+        var saldo = 0;
         for (var i = 0; i < data.length; i++) {
             var nominal = data[i].nominal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
             var status = data[i].status;
             if (status == 1) {
                 var masuk = nominal;
                 var keluar = '-';
+                saldo += parseInt(nominal.replace(/\./g, '')); // Tambahkan nominal ke saldo
+
             } else {
                 var masuk = '-';
                 var keluar = nominal;
+                saldo -= parseInt(nominal.replace(/\./g, '')); // Kurangkan nominal dari saldo
+
             }
             html += '<tr>' +
                         '<td>' + data[i].tanggal + '</td>' +
                         '<td>' + 'Rp ' + masuk + '</td>' +
                         '<td>' + 'Rp ' + keluar + '</td>' +
-                        '<td>' + 'Rp ' + data[i].saldo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</td>' +
+                        '<td>' + 'Rp ' + saldo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</td>' +
+                        '<td><a href="javascript:void(0)" onclick="Hapus('+data[i].id+','+data[i].id_siswa+')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a></td>' +
                         
                     '</tr>';
             no++;
@@ -61,4 +68,32 @@ $.ajax({
         alert('Error get data from ajax');
     }
 });
+
+function Hapus(id, id_siswa){
+        Swal({
+            title: 'Ingin menghapus data?',
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya'
+        }).then((result) => {
+            if(result.value) {
+                $.ajax({
+                    url : "<?=base_url($this->uri->segment(1).'/Hapus')?>/"+id+"/"+id_siswa,
+                    type: "POST",
+                    dataType: "JSON",
+                    success: function(data){
+                        location.reload();
+                        sweet('Dihapus !','Berhasil Hapus Data','success');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        sweet('Oops...','Gagal Hapus Data','error');
+                        console.log(jqXHR, textStatus, errorThrown);
+                    }
+                });
+            }
+        });
+    }
+
 </script>

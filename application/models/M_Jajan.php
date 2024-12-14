@@ -25,7 +25,7 @@ class M_Jajan extends CI_Model {
     }
 
     public function getDetail($id_siswa) {
-        $this->db->select('j.id, j.tanggal, j.masuk, j.keluar, j.saldo, j.keterangan');
+        $this->db->select('j.id, id_siswa, j.tanggal, j.masuk, j.keluar, j.saldo, j.keterangan');
         $this->db->from($this->table . ' j');
         $this->db->where('j.id_siswa', $id_siswa);
         $this->db->order_by('j.tanggal', 'DESC');

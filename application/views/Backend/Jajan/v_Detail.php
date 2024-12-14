@@ -16,6 +16,7 @@
                             <th>Keluar</th>
                             <th>Saldo</th>
                             <th>Keterangan</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -50,6 +51,7 @@ $.ajax({
                         '<td>' + (data[i].keluar != 0 ? 'Rp ' + data[i].keluar.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 'Rp 0') + '</td>' +
                         '<td>' + 'Rp ' + saldo.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</td>' +
                         '<td>' + data[i].keterangan + '</td>' +
+                        '<td><a href="javascript:void(0)" onclick="Hapus('+data[i].id+','+data[i].id_siswa+')" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a></td>' +
                     '</tr>';
             no++;
         }
@@ -59,6 +61,33 @@ $.ajax({
         alert('Error get data from ajax');
     }
 });
+
+function Hapus(id, id_siswa){
+        Swal({
+            title: 'Ingin menghapus data?',
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya'
+        }).then((result) => {
+            if(result.value) {
+                $.ajax({
+                    url : "<?=base_url($this->uri->segment(1).'/Hapus')?>/"+id+"/"+id_siswa,
+                    type: "POST",
+                    dataType: "JSON",
+                    success: function(data){
+                        location.reload();
+                        sweet('Dihapus !','Berhasil Hapus Data','success');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        sweet('Oops...','Gagal Hapus Data','error');
+                        console.log(jqXHR, textStatus, errorThrown);
+                    }
+                });
+            }
+        });
+    }
 
 
 
