@@ -64,6 +64,13 @@ class Gaji extends CI_Controller {
 		$cek = $this->db->query("SELECT id FROM gaji WHERE id_guru = '$id_gur' AND periode = '$bln' ")->num_rows();
 		$jam = filter_string($this->input->post('jam',TRUE));
 		$nominal = filter_string($this->input->post('gaji',TRUE));
+		if ($this->input->post('tanggal')) {
+			$tanggal = filter_string($this->input->post('tanggal',TRUE)).' '.date("H:i:s");
+		} else {
+			$tanggal = date("Y-m-d H:i:s");
+		}
+		
+
 		$total = $jam * $nominal;
 
 		if ($cek > 0){
@@ -76,7 +83,8 @@ class Gaji extends CI_Controller {
 	                    'periode'	=> $bln,
 	                    'time'	   => waktu(),
 	                    'jam'		=> $jam,
-	                    'nominal'	=> $nominal
+	                    'nominal'	=> $nominal,
+						'tanggal'	=> $tanggal
 	                );
 
 	        $insert = $this->M_General->insert($this->table,$insert);

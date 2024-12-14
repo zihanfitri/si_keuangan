@@ -58,11 +58,16 @@ class Tabungan extends CI_Controller {
 									   ->row();
 			
 			$saldo_baru = $saldo_terakhir ? $saldo_terakhir->saldo : 0;
+			if ($this->input->post('tanggal')) {
+                $tanggal = filter_string($this->input->post('tanggal',TRUE)).' '.date("H:i:s");
+            } else {
+                $tanggal = date("Y-m-d H:i:s");
+            }
 			
 			if ($jenis_transaksi == 'masuk') {
 				$insert = array(
 					'id_siswa'   => $id_siswa,
-					'tanggal'    => date("Y-m-d"),
+					'tanggal'    => $tanggal,
 					'status'      => 1,
 					'nominal'     => $nominal,
 					'saldo'      => $saldo_baru + $nominal,
@@ -70,7 +75,7 @@ class Tabungan extends CI_Controller {
 			} else {
 				$insert = array(
 					'id_siswa'   => $id_siswa,
-					'tanggal'    => date("Y-m-d"),
+					'tanggal'    => $tanggal,
 					'status'      => 2,
 					'nominal'     => $nominal,
 					'saldo'      => $saldo_baru - $nominal,

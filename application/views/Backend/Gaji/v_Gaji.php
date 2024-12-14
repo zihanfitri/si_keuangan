@@ -57,6 +57,10 @@
             <div class="modal-body">
                 <input type="hidden" id="gaji" name="gaji" value="">
                 <div class="form-group">
+                    <label class="control-label"> Tanggal</label>
+                    <div><input type="text" placeholder="Tanggal Gaji" autocomplete="off" name="tanggal" class="form-control datepicker"></div>
+                </div>
+                <div class="form-group">
                     <label class="control-label"> Nama Guru</label>
                     <?php $kls= $this->db->query("SELECT id,name,nip FROM guru")->result() ?>
                         <select name="guru" data-placeholder="--Pilih Guru--" class="form-control select2">

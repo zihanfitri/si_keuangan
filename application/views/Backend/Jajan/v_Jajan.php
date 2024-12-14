@@ -51,7 +51,12 @@
                             <?php endforeach; ?>
                         </select>
                     </div>
-                    
+
+                    <div class="form-group">
+                        <label class="control-label"> Tanggal</label>
+                        <div><input type="text" placeholder="Tanggal Jajan" autocomplete="off" name="tanggal" class="form-control datepicker"></div>
+                    </div>
+                        
                     <div class="form-group">
                         <label>Jenis Transaksi</label><br>
                         <input type="radio" name="jenis_transaksi" id="uang_masuk" value="masuk"> <label for="uang_masuk">Uang Masuk</label>

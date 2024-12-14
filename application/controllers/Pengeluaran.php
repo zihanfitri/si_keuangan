@@ -55,13 +55,19 @@ class Pengeluaran extends CI_Controller {
 
 	function Simpan(){
 		$total = filter_string($this->input->post('nominal',TRUE));
+		if ($this->input->post('tanggal')) {
+			$tanggal = filter_string($this->input->post('tanggal',TRUE)).' '.date("H:i:s");
+		} else {
+			$tanggal = date("Y-m-d H:i:s");
+		}
 
 		$insert = array(
 			'nominal'	 => $total,
 			'sekarang'	 => sekarang(),
 			'time'	     => waktu(),
 			'jenis'      => filter_string($this->input->post('jenis',TRUE)),
-			'keterangan' => filter_string($this->input->post('keterangan',TRUE))
+			'keterangan' => filter_string($this->input->post('keterangan',TRUE)),
+			'tanggal'	 => $tanggal
 		);
 
 		$insert = $this->M_General->insert($this->table,$insert);

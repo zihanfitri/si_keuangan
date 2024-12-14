@@ -15,6 +15,7 @@
                       <th>Tanggal</th>
                       <!-- <th>Jumlah Siswa</th> -->
                       <th>Nominal Pengeluaran</th>
+                      <th>Aksi</th>
 			            </tr>
 		            </thead>
 		            <tbody>
@@ -39,6 +40,10 @@
 <?= form_open('','role = "form" id = "form"')?>
             <div class="modal-body">
             	<input type="hidden" name="id" value="">
+                <div class="form-group">
+                    <label class="control-label"> Tanggal</label>
+                    <div><input type="text" placeholder="Tanggal Pengeluaran" autocomplete="off" name="tanggal" class="form-control datepicker"></div>
+                </div>
             	<div class="form-group">
             		<label class="control-label"> Nominal Pengeluaran</label>
             		<div><input type="text" required="" placeholder="Nominal Pengeluaran" onkeypress="return Angka(this)" autocomplete="off" name="nominal" class="form-control"></div>

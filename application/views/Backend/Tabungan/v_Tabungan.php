@@ -50,6 +50,10 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label class="control-label"> Tanggal</label>
+                        <div><input type="text" placeholder="Tanggal Tabungan" autocomplete="off" name="tanggal" class="form-control datepicker"></div>
+                    </div>
+                    <div class="form-group">
                         <label>Jenis Transaksi</label>
                         <select class="form-control" id="jenis_transaksi" name="jenis_transaksi" required>
                             <option value="">Pilih Jenis Transaksi</option>
