@@ -7,6 +7,7 @@ class M_Pengeluaran  extends CI_Model {
 		$this->datatables->select("id,sekarang,DATE_FORMAT(s.tanggal,'%d-%m-%Y') AS Tgl, Sum(s.nominal) AS Total");
 		$this->datatables->from('pengeluaran as s');
 		$this->datatables->group_by("DATE_FORMAT(s.tanggal,'%Y-%m-%d')");
+		$this->datatables->add_column('delete','<center><a href="javascript:void(0)" onclick="Hapus($1)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a> </center> ','id');
 		return $this->datatables->generate();
 	}
 

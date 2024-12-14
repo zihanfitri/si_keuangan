@@ -77,4 +77,17 @@ class Pengeluaran extends CI_Controller {
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 
+	public function Hapus($id){
+		$this->M_General->delete($this->table,'id',$id);
+        // $this->db->select_sum('masuk');
+        // $masuk = $this->db->get_where('jajan', array('id_siswa' => $id_siswa))->row('masuk');
+        // $this->db->select_sum('keluar');
+        // $keluar = $this->db->get_where('jajan', array('id_siswa' => $id_siswa))->row('masuk');
+        // $total_saldo = $masuk - $keluar;
+        // $this->db->where('id_siswa', $id_siswa);
+        // $this->db->update('jajan', array('saldo' => $total_saldo));
+		$data['status'] = TRUE;
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
+
 }

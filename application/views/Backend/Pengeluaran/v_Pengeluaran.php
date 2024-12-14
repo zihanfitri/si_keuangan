@@ -129,7 +129,12 @@
                 },
                 {"data": "Tgl"},
                 //{"data": "jumlah"},
-                {"data": "Total",render: $.fn.dataTable.render.number('.',',','')}
+                {"data": "Total",render: $.fn.dataTable.render.number('.',',','')},
+                {
+                    "data": "delete",
+                    "orderable": false,
+                    "searchable": false
+                }
             ],
             order: [[1, 'DESC']],
             rowId: function(a){
@@ -219,5 +224,33 @@
 		$('#modal-form').modal('show');
 		$('.modal-title').text('Tambah Data');
 	}
+
+    function Hapus(id){
+        Swal({
+            title: 'Ingin menghapus data?',
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya'
+        }).then((result) => {
+            if(result.value) {
+                $.ajax({
+                    url : "<?=base_url($this->uri->segment(1).'/Hapus')?>/"+id,
+                    type: "POST",
+                    dataType: "JSON",
+                    success: function(data){
+                        location.reload();
+                        sweet('Dihapus !','Berhasil Hapus Data','success');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        sweet('Oops...','Gagal Hapus Data','error');
+                        console.log(jqXHR, textStatus, errorThrown);
+                    }
+                });
+            }
+        });
+    }
+
 
 </script>

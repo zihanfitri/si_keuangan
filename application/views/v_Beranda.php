@@ -44,7 +44,27 @@ Swal.fire({
     </div>
 </div>
 
-<div class="col-xs-6">
+<div class="col-xs-12">
+    <div class="box box-danger">
+        <div class="box-header"> 
+        	<div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+           	</div>
+        </div>
+        <div class="box-body text-center">
+            <div class="jumbotron jumbotron-fluid" style="background-color:white;">
+                <div class="container">
+                 	<img style="width: 15%" src="<?=base_url('assets/dist/img/logo_al_muhajirin.png')?>">
+                    <h2 class="display-4 text-blue">SISTEM INFORMASI KEUANGAN</h2>
+                    <p class="lead text-primary">PONDOK PESANTREN MODERN AL-MUHAJIRIN</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs-12">
     <div class="box box-danger">
         <div class="box-header"> 
         	<div class="box-tools pull-right">
@@ -76,26 +96,6 @@ Swal.fire({
 				</table>
 				<div id="tombol">
 				</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="col-xs-6">
-    <div class="box box-danger">
-        <div class="box-header"> 
-        	<div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-           	</div>
-        </div>
-        <div class="box-body text-center">
-            <div class="jumbotron jumbotron-fluid" style="background-color:white;">
-                <div class="container">
-                 	<img style="width: 15%" src="<?=base_url('assets/dist/img/logo_al_muhajirin.png')?>">
-                    <h2 class="display-4 text-blue">SISTEM INFORMASI KEUANGAN</h2>
-                    <p class="lead text-primary">PONDOK PESANTREN MODERN AL-MUHAJIRIN</p>
-                </div>
             </div>
         </div>
     </div>
@@ -168,7 +168,7 @@ Swal.fire({
 					<tr>
 						<td>`+(index+1)+`</td>
 						<td><img src="`+url+item.foto+`" alt="Foto Profil" width="40" height="40" style="border-radius:50%"> `+item.name+`</td>
-						<td>`+item.kelas+`</td>
+						<td>`+item.nama+`</td>
 						<td>Rp `+(item.saldo_jajan ? formatRupiah(item.saldo_jajan) : 0)+`</td>
 						<td>Rp `+(item.saldo_tabungan ? formatRupiah(item.saldo_tabungan) : 0)+`</td>
 					</tr>
