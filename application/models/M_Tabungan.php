@@ -10,7 +10,7 @@ class M_Tabungan extends CI_Model {
 
     public function getAllData($kelas = '')
     {
-        $this->datatables->select('s.id, t.tanggal, s.name, COALESCE(t.saldo, 0) as nominal');
+        $this->datatables->select('s.id, t.tanggal, s.name,s.foto, COALESCE(t.saldo, 0) as nominal');
         $this->datatables->from('siswa s');
         $this->datatables->join('(SELECT id_siswa, MAX(id) as max_id FROM tabungan GROUP BY id_siswa) tm', 's.id = tm.id_siswa', 'left');
         $this->datatables->join('tabungan t', 'tm.max_id = t.id', 'left');

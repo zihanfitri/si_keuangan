@@ -130,7 +130,12 @@ $(document).ready(function() {
                     "orderable": false,
                     "searchable": false
                 },
-                {"data": "name"},
+                {"data": "name",
+                    "render": function(data, type, row) {
+                        var url = '<?= base_url('uploads/') ?>'
+                        return '<img src="'+url+''+ row.foto + '" alt="Foto Profil" width="50" height="50" style="border-radius:50%"> ' + data;
+                    }
+                },
                 {"data": "nominal", "render": function(data, type, row) {
                     return data ? 'Rp ' + data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 'Rp 0';
                 }},

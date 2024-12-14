@@ -86,7 +86,7 @@
                 </button>
                 <h4 class="modal-title"></h4>
             </div>
-<?= form_open('','role = "form" id = "form"')?>
+<?= form_open('','role = "form" id = "form" enctype="multipart/form-data"')?>
             <div class="modal-body">
             	<input type="hidden" name="id" value="">
                 <div class="form-group">
@@ -145,6 +145,10 @@
                         <option value="0">Tidak</option>
                         <option value="1">Ya</option>
                     </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Foto</label>
+                    <input type="file" class="form-control" name="foto">
                 </div>
             </div>
             <div class="modal-footer">
@@ -218,7 +222,8 @@
                 },
                 {"data": "name",
                     "render": function(data, type, row) {
-                        return '<a href="javascript:void(0)" class="text-black" onclick="detail('+row.id+')">' + data + '</a>';
+                        var url = '<?= base_url('uploads/') ?>'
+                        return '<a href="javascript:void(0)" class="text-black" onclick="detail('+row.id+')"><img src="'+url+''+ row.foto + '" alt="Foto Profil" width="50" height="50" style="border-radius:50%"> ' + data + '</a>';
                     }
                 },
                 {"data": "nis"},

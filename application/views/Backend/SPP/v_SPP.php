@@ -147,10 +147,12 @@
                     "searchable": false
                 },
                 {"data": "name","render": function(data, type, row) {
+                     var url = '<?= base_url('uploads/') ?>';
+                     
                     if(row.dispen == 1) {
-                        return data + ' <span class =btn-success>(dispen)</span>';
+                        return '<img src="'+url+''+ row.foto + '" alt="Foto Profil" width="50" height="50" style="border-radius:50%">' + data + ' <span class =btn-success>(dispen)</span>';
                     } else {
-                        return data;
+                        return '<img src="'+url+''+ row.foto + '" alt="Foto Profil" width="50" height="50" style="border-radius:50%"> ' + data;
                     }
                 }},
                 {"data": "nis"},

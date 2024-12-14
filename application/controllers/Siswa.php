@@ -84,6 +84,25 @@ class Siswa extends CI_Controller {
 	}
 
 	function Simpan(){
+		$config['upload_path']          = './uploads/';
+        $config['allowed_types']        = 'gif|jpg|jpeg|png';
+        $config['max_size']             = 1000000;
+        // $config['max_width']            = 1024;
+        // $config['max_height']           = 768;
+		
+        $this->load->library('upload', $config);
+        if (!$this->upload->do_upload('foto')) {
+            $data['error'] = array('error' => $this->upload->display_errors());
+			$data['status'] = false;
+			$this->output->set_content_type('application/json')->set_output(json_encode($data));
+        } else {
+            $dataFoto = $this->upload->data();
+			$namafile = $this->input->post('nama').$dataFoto['file_ext'];
+			$namaFoto = str_replace(" ", "_", $namafile);
+			rename($dataFoto['full_path'], $config['upload_path'] . $namaFoto);
+
+ 
+        
         $insert = array(
                     'name'  	=> filter_string(ucwords($this->input->post('nama'),TRUE)),
                     'sex'		=> $this->input->post('gender',TRUE),
@@ -94,15 +113,43 @@ class Siswa extends CI_Controller {
                     'alamat'	=> filter_string($this->input->post('alamat',TRUE)),
                     'status'	=> filter_string($this->input->post('status',TRUE)),
                     'wali'		=> filter_string($this->input->post('wali',TRUE)),
-                    'dispen'		=> filter_string($this->input->post('dispen',TRUE))
+                    'dispen'		=> filter_string($this->input->post('dispen',TRUE)),
+					'foto'		=> $namaFoto,
                 );
 
         $insert = $this->M_General->insert($this->table,$insert);
         $data['status'] = TRUE;
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
+			}
 	}
 
 	function Ubah(){
+			$id_siswa = $this->input->post('id');
+			$this->db->select('foto');
+            $this->db->where('id', $id_siswa);
+            $query = $this->db->get('siswa');
+            $gambar_lama = $query->row()->foto;
+            if ($gambar_lama != '') {
+                unlink('./uploads/' . $gambar_lama);
+            }
+			$config['upload_path']          = './uploads/';
+			$config['allowed_types']        = 'gif|jpg|jpeg|png';
+			$config['max_size']             = 1000000;
+			// $config['max_width']            = 1024;
+			// $config['max_height']           = 768;
+			
+			$this->load->library('upload', $config);
+			if (!$this->upload->do_upload('foto')) {
+				$data['error'] = array('error' => $this->upload->display_errors());
+				$data['status'] = false;
+				$this->output->set_content_type('application/json')->set_output(json_encode($data));
+			} else {
+				$dataFoto = $this->upload->data();
+				$namafile = $this->input->post('nama').$dataFoto['file_ext'];
+				$namaFoto = str_replace(" ", "_", $namafile);
+				rename($dataFoto['full_path'], $config['upload_path'] . $namaFoto);
+			}
+
         $insert = array(
                     'name'  	=> filter_string(ucwords($this->input->post('nama'),TRUE)),
                     'sex'		=> $this->input->post('gender',TRUE),
@@ -112,9 +159,10 @@ class Siswa extends CI_Controller {
                     'alamat'	=> filter_string($this->input->post('alamat',TRUE)),
                     'status'	=> filter_string($this->input->post('status',TRUE)),
                     'wali'		=> filter_string($this->input->post('wali',TRUE)),
-                    'dispen'		=> filter_string($this->input->post('dispen',TRUE))
+                    'dispen'		=> filter_string($this->input->post('dispen',TRUE)),
+					'foto'		=> $namaFoto,
                 );
-        $insert = $this->M_General->update($this->table,$insert,'id',$this->input->post('id'));
+        $insert = $this->M_General->update($this->table,$insert,'id',$id_siswa);
         $data['status'] = TRUE;
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}

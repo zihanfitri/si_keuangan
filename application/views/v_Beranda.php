@@ -163,10 +163,11 @@ Swal.fire({
 					$('#hasilCari').append('<tr><td colspan="3">Tidak ada data yang ditemukan.</td></tr>');
 				}
 				$.each(data, function(index, item){
+					var url = '<?= base_url('uploads/')?>'
 					$('#hasilCari').append(`
 					<tr>
 						<td>`+(index+1)+`</td>
-						<td>`+item.name+`</td>
+						<td><img src="`+url+item.foto+`" alt="Foto Profil" width="40" height="40" style="border-radius:50%"> `+item.name+`</td>
 						<td>`+item.kelas+`</td>
 						<td>Rp `+(item.saldo_jajan ? formatRupiah(item.saldo_jajan) : 0)+`</td>
 						<td>Rp `+(item.saldo_tabungan ? formatRupiah(item.saldo_tabungan) : 0)+`</td>

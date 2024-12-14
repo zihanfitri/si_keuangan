@@ -11,7 +11,7 @@ class M_Jajan extends CI_Model {
     }
 
     public function getAllData($kelas = null) {
-        $this->datatables->select('s.id, j.tanggal, s.name, COALESCE(j.saldo, 0) as saldo, j.keterangan');
+        $this->datatables->select('s.id, j.tanggal, s.name, s.foto, COALESCE(j.saldo, 0) as saldo, j.keterangan');
         $this->datatables->from('siswa s');
         $this->datatables->join('(SELECT id_siswa, MAX(id) as max_id FROM jajan GROUP BY id_siswa) jm', 's.id = jm.id_siswa', 'left');
         $this->datatables->join('jajan j', 'jm.max_id = j.id', 'left');
