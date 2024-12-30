@@ -145,4 +145,60 @@ class Jajan extends CI_Controller {
 		$this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 
+    public function print(){
+        $tanggal = $this->input->post("tanggal");
+        $id_siswa = $this->input->post("id_siswa");
+
+        $this->db->select('j.id, id_siswa, j.tanggal, j.masuk, j.keluar, j.saldo, j.keterangan');
+        $this->db->from($this->table . ' j');
+        $this->db->where('j.id_siswa', $id_siswa);
+        $this->db->where('j.tanggal', $tanggal);
+        $this->db->order_by('j.tanggal', 'DESC');
+        $data =  $this->db->get()->result();
+
+        // Load library PDF
+        $this->load->library('pdf');
+		
+		$pdf = new FPDF('p', 'mm', array(60, 300));
+		$pdf->AddPage();
+		
+		// Header
+		$pdf->SetFont('Arial', 'B', 10);
+		$pdf->Cell(0, 2, 'KWITANSI UANG JAJAN', 0, 1, 'C');
+		$pdf->SetFont('Arial', '',7);
+		$pdf->Cell(0, 10, 'PONDOK PESANTREN MODERN AL-MUHAJIRIN', 0, 1, 'C');
+		$pdf->Ln(2);
+		// Header Tabel
+
+        $pdf->setFont('Arial','', 6);
+        $pdf->Cell(1, 5, 'No', 0, 0, 'R');
+        $pdf->Cell(14, 5, 'Masuk', 0, 0, 'L');
+        $pdf->Cell(14, 5, 'Keluar', 0, 0, 'L');
+        $pdf->Cell(15, 5, 'Saldo', 0, 1, 'C');
+        $pdf->Ln(2);
+        $saldo = 0;
+        foreach ($data as $key => $value) {
+            if ($value->masuk != 0) {
+                $saldo += $value->masuk;
+            } else {
+                $saldo -= $value->keluar;
+            }
+            $pdf->Cell(1, 5, $key+1, 0, 0, 'R');
+            $pdf->Cell(14, 5, "Rp ". number_format($value->masuk,0,'','.'), 0, 0, 'L');
+            $pdf->Cell(14, 5, "Rp ". number_format($value->keluar,0,'','.'), 0, 0, 'L');
+            $pdf->Cell(15, 5, "Rp ". number_format($saldo,0,'','.'), 0, 1, 'C');
+            $pdf->Ln(0); 
+        }
+		
+		$pdf->Ln(10);
+		
+		// Tanda tangan
+		$pdf->Cell(48, 5, 'Petugas', 0, 1, 'R');
+		$pdf->Ln(4);
+		$pdf->Cell(48, 5, 'Ustdzh Neng Fitri Zihan Noviana', 0, 1, 'R');
+		
+
+		$pdf->Output();  
+    }
+
 }

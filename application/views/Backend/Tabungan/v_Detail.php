@@ -3,6 +3,15 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 <h3 class="box-title">Detail Tabungan <strong><?= $this->db->get_where('siswa', array('id' => $id_siswa))->row('name') ?></strong> </h3>
+                <div class="row">
+                    <div class="col-md-3">
+                        <form action="<?= base_url('Tabungan/print')?>" method="post">
+                            <input type="hidden" name="id_siswa" value="<?= $this->uri->segment(3) ?>">
+                            <input type="text" name="tanggal" class="form-control datepicker" autocomplete="off" placeholder="Tanggal">
+                            <button type="submit" onclick="_blank" class="btn btn-sm btn-success">Print</button>
+                        </form>
+                    </div>
+                </div>
                 <div style="display:flex; justify-content:flex-end">
                     <a href="<?php echo site_url('Tabungan'); ?>" class="btn btn-primary">Kembali</a>
                 </div>
