@@ -188,14 +188,26 @@ class Tabungan extends CI_Controller {
 
 	public function print(){
         $tanggal = $this->input->post("tanggal");
+		$tanggal_akhir = $this->input->post("tanggal_akhir");
         $id_siswa = $this->input->post("id_siswa");
 
-        $this->db->select('t.id, id_siswa, t.tanggal, t.nominal, t.saldo, t.status');
-        $this->db->from($this->table . ' t');
-        $this->db->where('t.id_siswa', $id_siswa);
-        $this->db->like('t.tanggal', $tanggal);
-        $this->db->order_by('t.tanggal', 'DESC');
-        $data =  $this->db->get()->result();
+		if (!$tanggal_akhir) {
+			$this->db->select('t.id, id_siswa, t.tanggal, t.nominal, t.saldo, t.status');
+			$this->db->from($this->table . ' t');
+			$this->db->where('t.id_siswa', $id_siswa);
+			$this->db->like('t.tanggal', $tanggal);
+			$this->db->order_by('t.tanggal', 'ASC');
+			$data =  $this->db->get()->result();
+		} else {
+			$this->db->select('t.id, id_siswa, t.tanggal, t.nominal, t.saldo, t.status');
+			$this->db->from($this->table . ' t');
+			$this->db->where('t.id_siswa', $id_siswa);
+			$this->db->where('t.tanggal>=', $tanggal);
+			$this->db->where('t.tanggal<=', $tanggal_akhir);
+			$this->db->order_by('t.tanggal', 'ASC');
+			$data =  $this->db->get()->result();
+		}
+		
 
         // Load library PDF
         $this->load->library('pdf');
@@ -207,39 +219,77 @@ class Tabungan extends CI_Controller {
 		$pdf->SetFont('Arial', 'B', 10);
 		$pdf->Cell(0, 2, 'KWITANSI UANG TABUNGAN', 0, 1, 'C');
 		$pdf->SetFont('Arial', '',7);
-		$pdf->Cell(0, 10, 'PONDOK PESANTREN MODERN AL-MUHAJIRIN', 0, 1, 'C');
-		$pdf->Cell(0,9, date('d-m-Y', $tanggal),0, 1, 'L');
-		$pdf->Ln(2);
+		$pdf->Cell(0, 8, 'PONDOK PESANTREN MODERN AL-MUHAJIRIN', 0, 1, 'C');
+        $pdf->setMargins(1,0);
+		$pdf->SetFont('Arial', '',5);
+		$pdf->Cell(0, 1, '', 0, 1, 'C');
+        $pdf->Cell(0, 3, 'Mulai tanggal: '. date('d-m-Y', strtotime($tanggal)) , 0, 1);
+        $pdf->Cell(0, 3, 'Sampai tanggal: '. date('d-m-Y', strtotime($tanggal_akhir)) , 0, 1);
+        $pdf->setMargins(12,0);
+		$pdf->Ln(4);
 		// Header Tabel
 
-        $pdf->setFont('Arial','', 6);
-        $pdf->Cell(1, 5, 'No', 0, 0, 'R');
-        $pdf->Cell(14, 5, 'Masuk', 0, 0, 'L');
-        $pdf->Cell(14, 5, 'Keluar', 0, 0, 'L');
-        $pdf->Cell(15, 5, 'Saldo', 0, 1, 'C');
-        $pdf->Ln(2);
-        $saldo = 0;
-        foreach ($data as $key => $value) {
-			if ($value->status == 1) {
-				$masuk = $value->nominal;
-				$keluar = '-';
-			}else{
-				$masuk = '-';
-				$keluar = $value->nominal;
+		if (!$tanggal_akhir) {
+			$pdf->setFont('Arial','', 6);
+			$pdf->Cell(1, 5, 'No', 0, 0, 'R');
+			$pdf->Cell(14, 5, 'Masuk', 0, 0, 'L');
+			$pdf->Cell(14, 5, 'Keluar', 0, 0, 'L');
+			$pdf->Cell(15, 5, 'Saldo', 0, 1, 'C');
+			$pdf->Ln(2);
+			$saldo = 0;
+			foreach ($data as $key => $value) {
+				if ($value->status == 1) {
+					$masuk = $value->nominal;
+					$keluar = '-';
+				}else{
+					$masuk = '-';
+					$keluar = $value->nominal;
+				}
+				if ($masuk != '-') {
+					$saldo += $masuk;
+				} else {
+					$saldo -= $keluar;
+				}
+				$pdf->Cell(1, 5, $key+1, 0, 0, 'R');
+				$pdf->Cell(14, 5, "Rp ". number_format($masuk,0,'','.'), 0, 0, 'L');
+				$pdf->Cell(14, 5, "Rp ". number_format($keluar,0,'','.'), 0, 0, 'L');
+				$pdf->Cell(15, 5, "Rp ". number_format($saldo,0,'','.'), 0, 1, 'C');
+				$pdf->Ln(0); 
 			}
-            if ($masuk != '-') {
-                $saldo += $masuk;
-            } else {
-                $saldo -= $keluar;
-            }
-            $pdf->Cell(1, 5, $key+1, 0, 0, 'R');
-            $pdf->Cell(14, 5, "Rp ". number_format($masuk,0,'','.'), 0, 0, 'L');
-            $pdf->Cell(14, 5, "Rp ". number_format($keluar,0,'','.'), 0, 0, 'L');
-            $pdf->Cell(15, 5, "Rp ". number_format($saldo,0,'','.'), 0, 1, 'C');
-            $pdf->Ln(0); 
-        }
+			
+			$pdf->Ln(10);
+		} else {
+			$pdf->setFont('Arial','', 6);
+			$pdf->Cell(1, 5, 'Tanggal', 0, 0, 'R');
+			$pdf->Cell(14, 5, 'Masuk', 0, 0, 'L');
+			$pdf->Cell(14, 5, 'Keluar', 0, 0, 'L');
+			$pdf->Cell(15, 5, 'Saldo', 0, 1, 'C');
+			$pdf->Ln(2);
+			$saldo = 0;
+			foreach ($data as $key => $value) {
+				if ($value->status == 1) {
+					$masuk = $value->nominal;
+					$keluar = '-';
+				}else{
+					$masuk = '-';
+					$keluar = $value->nominal;
+				}
+				if ($masuk != '-') {
+					$saldo += $masuk;
+				} else {
+					$saldo -= $keluar;
+				}
+				$pdf->Cell(1, 5, date("d-m-Y", strtotime($value->tanggal)), 0, 0, 'R');
+				$pdf->Cell(14, 5, "Rp ". number_format($masuk,0,'','.'), 0, 0, 'L');
+				$pdf->Cell(14, 5, "Rp ". number_format($keluar,0,'','.'), 0, 0, 'L');
+				$pdf->Cell(15, 5, "Rp ". number_format($saldo,0,'','.'), 0, 1, 'C');
+				$pdf->Ln(0); 
+			}
+			
+			$pdf->Ln(10);
+		}
 		
-		$pdf->Ln(10);
+
 		
 		// Tanda tangan
 		$pdf->Cell(48, 5, 'Petugas', 0, 1, 'R');

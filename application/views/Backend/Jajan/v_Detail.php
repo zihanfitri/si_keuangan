@@ -4,11 +4,12 @@
             <div class="box-header with-border">
                 <h3 class="box-title">Detail Uang Jajan <strong><?= $this->db->get_where('siswa', array('id' => $id_siswa))->row('name') ?></strong> </h3>
                 <div class="row">
-                    <div class="col-md-3">
-                        <form action="<?= base_url('Jajan/print')?>" method="post">                            
+                    <div class="col-md-6">
+                        <form action="<?= base_url('Jajan/print')?>" method="post" style="display:flex; flex-direction:row;">                            
                             <input type="hidden" name="id_siswa" value="<?= $this->uri->segment(3) ?>">
-                            <input type="text" name="tanggal" class="form-control datepicker" autocomplete="off" placeholder="Tanggal">
-                            <button type="submit" onclick="_blank" class="btn btn-sm btn-success">Print</button>
+                            <input type="text" name="tanggal" class="form-control datepicker" autocomplete="off" placeholder="Mulai tanggal">
+                            <input type="text" name="tanggal_akhir" class="form-control datepicker" style="margin-left:5px;" autocomplete="off" placeholder="Sampai tanggal">
+                            <button type="submit" onclick="_blank" class="btn btn-sm btn-success" style="margin-left:5px;">Print</button>
                         </form>
                     </div>
                 </div>
