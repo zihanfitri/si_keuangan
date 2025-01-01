@@ -27,6 +27,7 @@ $na = $this->db->query("SELECT name FROM siswa WHERE id = '$id'")->row_array();
 <?php 
 $no=1;
 foreach ($isi as $key ) { 
+    // kode untuk nominal
     $kode = base64_encode($key->spp.'-'.$key->makan.'-'.$key->air);
 
     ?>
