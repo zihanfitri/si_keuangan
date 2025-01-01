@@ -50,6 +50,8 @@ $.ajax({
         var no = 1;
         var saldo = 0;
         for (var i = 0; i < data.length; i++) {
+            console.log(data[i].masuk);
+            
             if (data[i].masuk != 0) {
                 saldo += parseInt(data[i].masuk);
             } else {

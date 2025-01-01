@@ -26,7 +26,10 @@ $na = $this->db->query("SELECT name FROM siswa WHERE id = '$id'")->row_array();
                     <tbody>
 <?php 
 $no=1;
-foreach ($isi as $key ) { ?>
+foreach ($isi as $key ) { 
+    $kode = base64_encode($key->spp.'-'.$key->makan.'-'.$key->air);
+
+    ?>
                         <tr>
                             <td><?=$no++;?></td>
                             <td><?=tanggal($key->tanggal,'bulan').' - '.jam($key->tanggal).' WIB'?></td>
@@ -34,6 +37,7 @@ foreach ($isi as $key ) { ?>
                             <td><?=rupiah($key->nominal)?></td>
                             <td>
                                 <a href="javascript:void(0)" onclick="Hapus(<?=$key->id?>)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a>
+                                <a href="<?= base_url('SPP/LoadReceipt/').$key->id.'?n='.$kode ?>" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-xs"><i class="fa fa-print"></i> Print</a>
                             </td>
                             
                         </tr>

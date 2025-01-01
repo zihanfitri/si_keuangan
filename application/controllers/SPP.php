@@ -76,7 +76,10 @@ class SPP extends CI_Controller {
 	                    'id_siswa'	=> $id,
 	                    'time'	   => waktu(),
 	                    'bulan'		=> $bln,
-	                    'nominal'	=> $total
+	                    'nominal'	=> $total,
+	                    'spp'	=> $spp,
+	                    'makan'	=> $makan,
+	                    'air'	=> $air
 	                );
 	        $insert = $this->M_General->insert($this->table,$insert);
 	        $data['id'] = $this->db->insert_id();
