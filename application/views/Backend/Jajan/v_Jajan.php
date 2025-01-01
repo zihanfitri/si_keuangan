@@ -146,9 +146,12 @@ $(document).ready(function() {
                         return '<img src="'+url+''+ row.foto + '" alt="Foto Profil" width="50" height="50" style="border-radius:50%"> ' + data;
                     }
                 },
-                {"data": "saldo", "render": function(data, type, row) {
-                    return data ? 'Rp ' + data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 'Rp 0';
-                }},
+                {
+                    "data": "saldo", 
+                    "render": function(data, type, row) {
+                        return data ? 'Rp ' + data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 'Rp 0'
+                    }, "searchable":false
+                },
                 {"data": "keterangan"},
                 {
                     "data": "view",

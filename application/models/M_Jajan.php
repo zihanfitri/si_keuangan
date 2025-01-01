@@ -11,10 +11,10 @@ class M_Jajan extends CI_Model {
     }
 
     public function getAllData($kelas = null) {
-        $this->datatables->select('s.id, j.tanggal, s.name, s.foto, COALESCE(j.saldo, 0) as saldo, j.keterangan');
+        $this->datatables->select('s.id, s.name, s.foto, j.tanggal, j.keterangan, SUM(j.masuk) AS total_masuk, SUM(j.keluar) AS total_keluar, SUM(j.masuk) - SUM(j.keluar) AS saldo');
         $this->datatables->from('siswa s');
-        $this->datatables->join('(SELECT id_siswa, MAX(id) as max_id FROM jajan GROUP BY id_siswa) jm', 's.id = jm.id_siswa', 'left');
-        $this->datatables->join('jajan j', 'jm.max_id = j.id', 'left');
+        $this->datatables->join('jajan j', 's.id = j.id_siswa', 'left');
+        $this->datatables->group_by('s.id');
         $this->datatables->order_by('s.name', 'ASC');
         $this->datatables->add_column('view','<center><a href="javascript:void(0)" onclick="detail($1)" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> Detail</a>','id');
 
