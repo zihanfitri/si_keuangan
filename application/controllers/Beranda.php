@@ -35,7 +35,7 @@ class Beranda extends CI_Controller {
 
 	public function cariSantri(){
 		$cari = $this->input->post('cari');
-		$this->db->select('siswa.*, kelas.nama, (SELECT saldo FROM jajan WHERE id_siswa = siswa.id ORDER BY id DESC LIMIT 1) as saldo_jajan, (SELECT saldo FROM tabungan WHERE id_siswa = siswa.id ORDER BY id DESC LIMIT 1) as saldo_tabungan');
+		$this->db->select('siswa.*, kelas.nama, (SELECT SUM(masuk)-SUM(keluar) as saldo FROM `jajan` WHERE id_siswa = siswa.id) as saldo_jajan, (SELECT saldo FROM tabungan WHERE id_siswa = siswa.id ORDER BY id DESC LIMIT 1) as saldo_tabungan');
 		$this->db->from('siswa');
 		$this->db->join('kelas', 'siswa.kelas = kelas.id');
 		$this->db->like('siswa.name', $cari);

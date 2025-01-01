@@ -169,8 +169,9 @@ Swal.fire({
 						<td>`+(index+1)+`</td>
 						<td><img src="`+url+item.foto+`" alt="Foto Profil" width="40" height="40" style="border-radius:50%"> `+item.name+`</td>
 						<td>`+item.nama+`</td>
-						<td>Rp `+(item.saldo_jajan ? formatRupiah(item.saldo_jajan) : 0)+`</td>
-						<td>Rp `+(item.saldo_tabungan ? formatRupiah(item.saldo_tabungan) : 0)+`</td>
+						data ? 'Rp ' + data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 'Rp 0'
+						<td>Rp `+(item.saldo_jajan ? item.saldo_jajan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 'Rp 0')+`</td>
+						<td>Rp `+(item.saldo_tabungan ? item.saldo_tabungan.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 'Rp 0')+`</td>
 					</tr>
 					<tr>
 						<td colspan="5">
