@@ -60,10 +60,8 @@ class Beranda extends CI_Controller {
             $nominal = $this->input->post('nominal');
             $id_siswa = $this->input->post('id_siswa');            
             // Ambil saldo terakhir siswa
-            $saldo_terakhir = $this->db->select('saldo')
+            $saldo_terakhir = $this->db->select('SUM(masuk)-SUM(keluar) as saldo')
                                        ->where('id_siswa', $id_siswa)
-                                       ->order_by('id', 'DESC')
-                                       ->limit(1)
                                        ->get('jajan')
                                        ->row();
             

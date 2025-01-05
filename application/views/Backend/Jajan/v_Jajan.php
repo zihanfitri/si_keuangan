@@ -17,7 +17,7 @@
                             <th>Tanggal</th>
                             <th>Santri</th>
                             <th>Saldo</th>
-                            <th>Keterangan</th>
+                            <th>Keterangan Terakhir</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -152,7 +152,7 @@ $(document).ready(function() {
                         return data ? 'Rp ' + data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") : 'Rp 0'
                     }, "searchable":false
                 },
-                {"data": "keterangan"},
+                {"data": "keterangan", 'searchable': false},
                 {
                     "data": "view",
                     "orderable": false,

@@ -11,9 +11,9 @@ class M_Jajan extends CI_Model {
     }
 
     public function getAllData($kelas = null) {
-        $this->datatables->select('s.id, s.name, s.foto, j.tanggal, j.keterangan, SUM(j.masuk) AS total_masuk, SUM(j.keluar) AS total_keluar, SUM(j.masuk) - SUM(j.keluar) AS saldo');
+        $this->datatables->select('s.id, s.name, s.foto, j.tanggal, SUM(j.masuk) AS total_masuk, SUM(j.keluar) AS total_keluar, SUM(j.masuk) - SUM(j.keluar) AS saldo, (SELECT keterangan FROM jajan j2 WHERE j2.id_siswa = s.id ORDER BY id DESC LIMIT 1) AS keterangan');
         $this->datatables->from('siswa s');
-        $this->datatables->join('jajan j', 's.id = j.id_siswa', 'left');
+        $this->datatables->join('jajan j', 's.id = j.id_siswa', 'right');
         $this->datatables->group_by('s.id');
         $this->datatables->order_by('s.name', 'ASC');
         $this->datatables->add_column('view','<center><a href="javascript:void(0)" onclick="detail($1)" class="btn btn-info btn-xs"><i class="fa fa-eye"></i> Detail</a>','id');
