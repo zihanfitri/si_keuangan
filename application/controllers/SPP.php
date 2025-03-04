@@ -92,6 +92,14 @@ class SPP extends CI_Controller {
         $this->output->set_content_type('application/json')->set_output(json_encode($data));
 	}
 
+	function edit(){
+		$id = $this->input->post('id',TRUE);
+		$tanggal = $this->input->post('tanggal',TRUE);
+		$this->db->update($this->table,['tanggal' => $tanggal],['id' => $id]);
+		$data['status'] = TRUE;
+		$this->output->set_content_type('application/json')->set_output(json_encode($data));
+	}
+
 	function LoadReceipt($id_pembayaran) {
 		$pembayaran = $this->M_General->getByID('spp', 'id', $id_pembayaran, 'DESC')->row_array();
 

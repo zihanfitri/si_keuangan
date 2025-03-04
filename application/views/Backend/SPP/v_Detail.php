@@ -38,6 +38,7 @@ foreach ($isi as $key ) {
                             <td><?=rupiah($key->nominal)?></td>
                             <td>
                                 <a href="javascript:void(0)" onclick="Hapus(<?=$key->id?>)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Hapus</a>
+                                <a href="javascript:void(0)" onclick="Edit(<?=$key->id?>)" class="btn btn-warning btn-xs"><i class="fa fa-edit"></i> Edit</a>
                                 <a href="<?= base_url('SPP/LoadReceipt/').$key->id.'?n='.$kode ?>" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-xs"><i class="fa fa-print"></i> Print</a>
                             </td>
                             
@@ -46,6 +47,30 @@ foreach ($isi as $key ) {
                       
                     </tbody>
                 </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Tambah -->
+<div class="modal fade" id="modal-form">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Data</h4>
+            </div>
+            <div class="modal-body">
+                <form action="javascript:void(0)" method="post" id="form-edit">
+                    <input type="hidden" name="id" id="id">
+                    <input type="hidden" name="id_siswa" id="id_siswa" value="<?=$id?>">
+                    <div class="form-group">
+                        <label for="tanggal">Tanggal</label>
+                        <input type="date" name="tanggal" id="tanggal" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" onclick="prosesEdit()" class="btn btn-primary">Simpan</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -75,6 +100,25 @@ foreach ($isi as $key ) {
                         console.log(jqXHR, textStatus, errorThrown);
                     }
                 });
+            }
+        });
+    }
+
+
+    function Edit(id){
+        $('#id').val(id);
+        $('#modal-form').modal('show');
+        $('#tanggal').val('');
+    }
+    function prosesEdit(){
+        $.ajax({
+            url : "<?=base_url('SPP/edit')?>",
+            type: "POST",
+            dataType: "JSON",
+            data: $('#form-edit').serialize(),
+            success: function(data){
+                location.reload();
+                sweet('Berhasil !','Berhasil Edit Data','success');
             }
         });
     }

@@ -13,8 +13,11 @@
 			            <tr>
                       <th style="width: 10px;">No</th>
                       <th>Tanggal</th>
+                      <th>Jenis</th>
                       <th>Nominal Pemasukan</th>
+                      <th>Siswa</th>
                       <th>Keterangan</th>
+                      <th>Aksi</th>
 			            </tr>
 		            </thead>
 		            <tbody>
@@ -45,7 +48,7 @@
             	</div>
                 <div class="form-group">
                     <label class="control-label">Jenis Pemasukan</label>
-                    <select name="jenis" id="jenis" required="" data-placeholder="--Pilih--" class="form-control">
+                    <select name="jenis" id="jenis" onchange="pilih_siswa(this.value)" required="" data-placeholder="--Pilih--" class="form-control">
                         <option value="">--Pilih--</option>
                         <option value="Uang Kegiatan">Uang Kegiatan</option>
                         <option value="Uang Sapras">Uang Sapras</option>
@@ -54,6 +57,15 @@
                         <option value="Pinjaman">Pinjaman</option>
                         <option value="Sumbangan">Sumbangan</option>
                         <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+                <div class="form-group pilih_siswa" style="display: none;">
+                    <label class="control-label"> Siswa</label>
+                    <select name="id_siswa" id="id_siswa" data-placeholder="--Pilih--" class="form-control select2">
+                        <option value="">--Pilih--</option>
+                        <?php foreach ($siswa as $key) {?>
+                            <option value="<?=$key->id?>"><?=$key->name?></option>
+                        <?php } ?>
                     </select>
                 </div>
                 <div class="form-group">
@@ -72,6 +84,13 @@
 
 
 <script type="text/javascript">
+function pilih_siswa(value=''){
+    if(value == 'Uang Kegiatan' || value == 'Uang Sapras'){
+        $('.pilih_siswa').show();
+    }else{
+        $('.pilih_siswa').hide();
+    }
+}
     $('#jenis').on('change',function(){
         var jenis = '';
         var jenis = $("#jenis").val();
@@ -141,10 +160,16 @@
                     "orderable": false,
                     "searchable": false
                 },
-                {"data": "Tgl"},
-                //{"data": "jumlah"},
-                {"data": "Total",render: $.fn.dataTable.render.number('.',',','')},
-                {"data": "keterangan"}
+                {"data": "tanggal"},
+                {"data": "jenis"},
+                {"data": "nominal",render: $.fn.dataTable.render.number('.',',','')},
+                {"data": "siswa"},
+                {"data": "keterangan"},
+                {
+                    "data": "view",
+                    "orderable": false,
+                    "searchable": false
+                }
             ],
             order: [[0, 'asc']],
             rowId: function(a){
@@ -204,6 +229,7 @@
 						sweet('Di '+method,'Berhasil '+method+' Data','success');
 						$('#simpan').text('Simpan');
 		 				$('#simpan').attr('disabled',false);
+                         window.open('<?= base_url($this->uri->segment(1) . '/print/') ?>' + data.id + '_blank');
 					}
 				});
 			},
@@ -236,6 +262,32 @@
 		$('#modal-form').modal('show');
 		$('.modal-title').text('Tambah Data');
 	}
+    function Hapus(id){
+        Swal({
+            title: 'Ingin menghapus data?',
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya'
+        }).then((result) => {
+            if(result.value) {
+                $.ajax({
+                    url : "<?=base_url($this->uri->segment(1).'/Hapus')?>/"+id,
+                    type: "POST",
+                    dataType: "JSON",
+                    success: function(data){
+                        location.reload();
+                        sweet('Dihapus !','Berhasil Hapus Data','success');
+                    },
+                    error: function (jqXHR, textStatus, errorThrown){
+                        sweet('Oops...','Gagal Hapus Data','error');
+                        console.log(jqXHR, textStatus, errorThrown);
+                    }
+                });
+            }
+        });
+    }
 
 
 </script>

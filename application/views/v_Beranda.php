@@ -1,20 +1,3 @@
-<script>
-// mengasumsikan Anda menggunakan jQuery
-$(document).ready(function() {
-$('.confirm-div').hide();
-<?php if($this->session->flashdata('pesan')){ ?>
-Swal.fire({
-  title: 'Pesan',
-  text: '<?php echo $this->session->flashdata('pesan'); ?>',
-  icon: 'info',
-  confirmButtonText: 'OK'
-});
-<?php } ?>
-});
-</script>
-
-
-
 <div class="col-md-4 col-sm-6 col-xs-12">
     <div class="info-box">
         <span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-inbox"></i></span>
@@ -80,7 +63,6 @@ Swal.fire({
                         <button type="button" class="btn btn-primary" onclick="cariSantri()">Cari</button>
                         
                 </div>
-				</div>
 				<table class="table table-bordered table-striped" style="margin-top: 10px;">
 					<thead>
 						<tr>
@@ -95,6 +77,8 @@ Swal.fire({
 					</tbody>
 				</table>
 				<div id="tombol">
+				</div>
+
 				</div>
             </div>
         </div>
@@ -141,6 +125,44 @@ Swal.fire({
 	            	<a href="<?=base_url('Siswa')?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 	            </div>
         	</div>
+
+
+			<!-- modal swall -->
+			<div class="modal fade" id="modal-flashdata" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-sm">
+				<div class="modal-content" style="border-radius:30px">
+				<div class="modal-header">
+					<center>
+						<!-- <h5 class="modal-title" id="exampleModalLabel">Notifikasi</h5> -->
+						<img src="<?= base_url('assets/images/check.gif')?>" alt="" width="40px">
+					</center>
+					<!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+				</div>
+				<div class="modal-body">
+					<p id="flashdata-content"></p>
+				</div>
+				<div class="modal-footer" id="tombol_footer">
+				</div>
+				</div>
+			</div>
+			</div>	
+			
+<script>
+	$(document).ready(function() {
+  // Cek apakah ada flashdata
+  var flashdata = '<?php echo $this->session->flashdata('pesan'); ?>';
+  var id_siswa = '<?php echo $this->session->userdata('id_siswa'); ?>';
+  var tipe = '<?php echo $this->session->userdata('tipe'); ?>';
+  var tFooter = `
+					<button class="btn btn-primary" onclick="detailSantri(`+id_siswa+`,'`+tipe+`')">Lanjut Transaksi</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>`;
+  if (flashdata) {
+    $('#flashdata-content').html(flashdata);
+    $('#tombol_footer').html(tFooter);
+    $('#modal-flashdata').modal('show');
+  }
+});
+</script>
 
 
 <script>
@@ -198,6 +220,8 @@ Swal.fire({
 			url: "<?=base_url('Beranda/detailSantri')?>/" + id,
 			type: "GET",
 			success: function(data){
+
+				$('#modal-flashdata').modal('hide');
 				if(jenis == 'jajan'){
 					title = 'Data Jajan Santri';
 					url = '<?=base_url('Beranda/SimpanJajan')?>';
